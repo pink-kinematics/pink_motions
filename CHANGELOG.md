@@ -16,13 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Bump minimum Python version to 3.10
+- Bump minimum Pink version to 4.4.0
+- Bump minimum Python version to 3.11
+- Scenarios: update the 7-dof Kinova Gen3 description
+- Scenarios: update the Universal Robots descriptions
 - Transfer copyright notices to `NOTICE` file
 - examples: Rename scenario parg to --robot kwarg
+- pixi: Install Pinocchio from conda-forge rather than from PyPI
 
 ### Removed
 
 - Remove `environment.yaml` as we are now using pixi
+- Remove `RunningMeanStd` as it was unused
 
 ## [0.2.0] - 2024-12-16
 
