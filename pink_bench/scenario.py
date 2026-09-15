@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
+"""Scenario dataclass."""
+
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List, Optional, Tuple
 
@@ -11,6 +13,8 @@ TrajectoryCallable = Callable[[pink.Task, float, Optional[dict]], None]
 
 @dataclass
 class Scenario:
+    """Scenario dataclass."""
+
     name: str
     duration: float
     robot_description: str

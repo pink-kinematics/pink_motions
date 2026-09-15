@@ -22,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Scenarios: update the Universal Robots descriptions
 - Transfer copyright notices to `NOTICE` file
 - examples: Rename scenario parg to --robot kwarg
-- pixi: Install Pinocchio from conda-forge rather than from PyPI
 
 ### Removed
 

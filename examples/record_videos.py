@@ -1,12 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # /// script
-# requires-python = ">=3.9"
+# requires-python = ">=3.11"
 # dependencies = [
 #   "pink_bench",
 #   "qpsolvers>=4.3.1",
 # ]
 # ///
+
+"""Record a video of each scenario of the library, or of some of them."""
 
 import argparse
 import glob
@@ -48,6 +50,12 @@ def parse_command_line_arguments() -> argparse.Namespace:
 
 
 def save_video(name: str, frequency: int) -> None:
+    """Encode the frames recorded for a scenario into a video.
+
+    Args:
+        name: Name of the scenario whose frames to encode.
+        frequency: Frame rate of the video, in Hz.
+    """
     video_output = f"videos/{name}.mp4"
     print(f"Saving video to {video_output}...")
     subprocess.run(

@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
+"""Back-and-forth trajectory, used by the arm scenarios."""
+
 from typing import Optional
 
 import numpy as np

@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
+"""Play a scenario of the library, in real time."""
+
 from typing import Optional
 
 import numpy as np
