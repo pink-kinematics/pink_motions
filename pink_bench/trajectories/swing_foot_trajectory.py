@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
+"""Swing-foot trajectory, used by the walking scenarios."""
+
 import numpy as np
 import pink
 import pinocchio as pin
@@ -9,6 +11,19 @@ from .trajectory import Trajectory
 
 
 class SwingFootTrajectory(Trajectory):
+    """Step a foot frame forward, lifting it between footholds.
+
+    Footholds are spaced by ``stride`` along the x-axis of the world frame,
+    starting from where the foot stands at reset time. During the swing
+    phase of each walking cycle, the target moves in a straight line from
+    one foothold to the next, with a vertical clearance peaking at
+    ``height`` (see ``height_polynomial``). Outside of it, it rests on a
+    foothold: the current one before take-off, the next one after landing.
+
+    Pair one instance per foot with a ``LIPMWalkingTrajectory`` sharing the
+    same phase durations and stride to get a walking scenario.
+    """
+
     def __init__(
         self,
         task: pink.tasks.FrameTask,
@@ -24,6 +39,23 @@ class SwingFootTrajectory(Trajectory):
 
         Args:
             task: Frame task whose target to update.
+            cycle_duration: Duration of a full walking cycle, in seconds.
+            height: Peak clearance of the foot above its footholds, in
+                meters.
+            is_lead_foot: If set, this foot takes the first step. Its first
+                stride is halved, as the center of mass is slower then than
+                in the periodic regime.
+            lateral_offset: Lateral offset, in meters, from the initial
+                placement of the foot frame to the first foothold.
+            stride: Distance between consecutive footholds of this foot, in
+                meters.
+            swing_end: Time in the walking cycle, in seconds, at which the
+                foot lands on its next foothold.
+            swing_start: Time in the walking cycle, in seconds, at which the
+                foot takes off.
+
+        Raises:
+            AssertionError: if the swing phase is shorter than 10 ms.
         """
         super().__init__(task)
         swing_duration = swing_end - swing_start
@@ -58,6 +90,18 @@ class SwingFootTrajectory(Trajectory):
         self.transform_foot_to_model = None
 
     def reset(self, configuration: pink.Configuration, viewer: Visualizer):
+        """Reset the trajectory to a robot configuration.
+
+        The first foothold is the current position of the foot frame,
+        shifted laterally by ``lateral_offset`` and aligned with the world
+        frame. The orientation of the foot frame at reset time is kept as an
+        offset applied to all targets, so that stepping does not rotate the
+        foot.
+
+        Args:
+            configuration: Initial configuration of the robot.
+            viewer: MeshCat viewer, unused by this trajectory.
+        """
         super().reset(configuration, viewer)
         self.nb_steps = 0
         self.t = 0.0

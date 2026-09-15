@@ -15,6 +15,14 @@ from .trajectory import Trajectory
 
 
 class BackAndForthTrajectory(Trajectory):
+    """Sweep a frame target back and forth between two positions.
+
+    The target oscillates between ``start_position`` and ``stop_position``
+    following a squared sine of time, while rocking in yaw and roll with
+    the same phase. It sweeps a sizeable portion of the workspace of an
+    arm, which is what the arm scenarios of the bench library use it for.
+    """
+
     def __init__(
         self,
         task: pink.tasks.FrameTask,
@@ -26,10 +34,13 @@ class BackAndForthTrajectory(Trajectory):
         """Prepare a task-target update function.
 
         Args:
+            task: Frame task whose target to move.
             position_scale: Scaling factor applied to the position trajectory
                 in the world frame.
-            start_position: Initial position.
-            stop_position: Position at the other end of the trajectory.
+            start_position: Initial position, in meters. Defaults to a
+                position suitable for a fixed-base arm.
+            stop_position: Position at the other end of the trajectory, in
+                meters. Defaults to a position suitable for a fixed-base arm.
             target_orientation: Orientation of the task frame with respect to
                 the default orientation of the trajectory in the world frame.
         """
@@ -52,6 +63,15 @@ class BackAndForthTrajectory(Trajectory):
         self.transform_target_to_world = pin.SE3.Identity()
 
     def reset(self, configuration: pink.Configuration, viewer: Visualizer):
+        """Reset the trajectory to a robot configuration.
+
+        The target transform is re-anchored on the current placement of the
+        task frame, whose translation and rotation ``step`` then overwrites.
+
+        Args:
+            configuration: Initial configuration of the robot.
+            viewer: MeshCat viewer, unused by this trajectory.
+        """
         super().reset(configuration, viewer)
         self.transform_target_to_world = (
             configuration.get_transform_frame_to_world(self.task.frame)

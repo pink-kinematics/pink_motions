@@ -1,5 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 
+"""Walking trajectory from model predictive control of a LIPM.
+
+The root frame of the robot follows the center of mass of a linear inverted
+pendulum model (LIPM) whose zero-tilting moment point (ZMP) is constrained to
+the support area of the foot it stands on.
+"""
+
 import uuid
 from typing import Optional, Tuple
 
@@ -22,6 +29,14 @@ MAX_ZMP_DIST = 100.0  # [m]
 def display_foot_area(
     viewer: Visualizer, transform_contact_to_world: pin.SE3, foot_size
 ):
+    """Draw a foothold and the vertices of its support area.
+
+    Args:
+        viewer: MeshCat viewer, or ``None`` to draw nothing.
+        transform_contact_to_world: Placement of the contact frame at the
+            center of the foothold.
+        foot_size: Half-length and half-width of the foot, in meters.
+    """
     prefix = str(uuid.uuid4())
     if viewer is not None:
         meshcat_shapes.point(
@@ -54,6 +69,17 @@ def display_foot_area(
 def plot_plan(
     live_plot, sampling_period, nb_timesteps, omega, mpc_problem, plan
 ) -> None:
+    """Plot the positions and ZMP of a plan over the receding horizon.
+
+    Args:
+        live_plot: Live plot to update.
+        sampling_period: Duration of a timestep of the plan, in seconds.
+        nb_timesteps: Number of timesteps in the receding horizon.
+        omega: Natural frequency of the pendulum, in [s]⁻¹.
+        mpc_problem: Problem the plan was computed from, whose inequality
+            vector holds the ZMP bounds.
+        plan: Solution to that problem, holding the predicted states.
+    """
     horizon_duration = sampling_period * nb_timesteps
     trange = np.linspace(0.0, 0.0 + horizon_duration, nb_timesteps + 1)
     X = plan.states
@@ -121,6 +147,16 @@ def build_mpc_problem(
 
 
 class PhaseStepper:
+    """Walking phase clock over a receding horizon.
+
+    The clock tracks the index of the current timestep in a step, made of a
+    double-support phase (DSP) followed by a single-support one (SSP), as
+    well as the stride the robot is currently taking. It answers
+    the two questions the walking MPC problem asks at every update: how many
+    timesteps of the horizon fall in each phase (``get_nb_steps``), and
+    where the upcoming footholds are (``get_next_foot_pose``).
+    """
+
     def __init__(
         self,
         dsp_duration: float,
@@ -129,6 +165,20 @@ class PhaseStepper:
         ssp_duration: float,
         strides: NDArray[float],
     ):
+        """Initialize the phase clock.
+
+        Args:
+            dsp_duration: Duration of double-support phases, in seconds.
+            nb_timesteps: Number of timesteps in the receding horizon.
+            sampling_period: Duration of a timestep, in seconds.
+            ssp_duration: Duration of single-support phases, in seconds.
+            strides: Successive strides, as translations in meters from one
+                foothold to the next, cycled through as the robot walks.
+
+        Raises:
+            ProblemDefinitionError: if the receding horizon is long enough to
+                span more than two steps.
+        """
         nb_dsp_steps = int(round(dsp_duration / sampling_period))
         nb_ssp_steps = int(round(ssp_duration / sampling_period))
         if 2 * (nb_dsp_steps + nb_ssp_steps) < nb_timesteps:
@@ -149,18 +199,37 @@ class PhaseStepper:
         self.strides = strides
 
     def reset(self):
+        """Reset the clock to its initial phase and first stride."""
         self.index = self.__initial_index
         self.stride_index = 0
 
     def advance(self):
+        """Advance the clock by one timestep.
+
+        The index wraps back to zero, i.e. to the start of a double-support
+        phase, at the end of each step.
+        """
         self.index += 1
         if self.index >= self.nb_dsp_steps + self.nb_ssp_steps:
             self.index = 0
 
     def advance_stride(self):
+        """Move on to the next stride, cycling through the list."""
         self.stride_index = (self.stride_index + 1) % len(self.strides)
 
     def get_nb_steps(self):
+        """Split the receding horizon into support phases.
+
+        Returns:
+            Number of timesteps of the horizon that fall in each phase it
+            spans, as a tuple ``(init_dsp, init_ssp, next_dsp, next_ssp,
+            last_dsp, last_ssp)``. The initial counts are what remains of
+            the phases the current timestep is in.
+
+        Raises:
+            ProblemDefinitionError: if the horizon spans more than the two
+                steps this decomposition accounts for.
+        """
         offset = self.index
         nb_init_dsp_steps = max(0, self.nb_dsp_steps - offset)
         offset = max(0, offset - self.nb_dsp_steps)
@@ -190,7 +259,15 @@ class PhaseStepper:
             nb_last_ssp_steps,
         )
 
-    def get_next_foot_pose(self, transform_foot_to_world: pin.SE3) -> float:
+    def get_next_foot_pose(self, transform_foot_to_world: pin.SE3) -> pin.SE3:
+        """Get the foothold following a given one.
+
+        Args:
+            transform_foot_to_world: Placement of the current foothold.
+
+        Returns:
+            Placement of the next foothold, one stride away.
+        """
         transform_stride_to_foot = pin.SE3(
             rotation=np.eye(3),
             translation=self.strides[self.stride_index],
@@ -198,15 +275,50 @@ class PhaseStepper:
         return transform_foot_to_world * transform_stride_to_foot
 
     def get_next_foot_on_axis(self, foot_pos: float, axis: int) -> float:
+        """Get the coordinate of the next foothold along one axis.
+
+        Args:
+            foot_pos: Coordinate of the current foothold along the axis.
+            axis: Index of the axis (0 for x, 1 for y).
+
+        Returns:
+            Coordinate of the next foothold along the same axis.
+        """
         return foot_pos + self.strides[self.stride_index][axis]
 
     def get_last_foot_on_axis(self, foot_pos: float, axis: int) -> float:
+        """Get the coordinate of the second next foothold along one axis.
+
+        Args:
+            foot_pos: Coordinate of the current foothold along the axis.
+            axis: Index of the axis (0 for x, 1 for y).
+
+        Returns:
+            Coordinate of the foothold after the next one, i.e. two strides
+            away, along the same axis. It is the last foothold a receding
+            horizon can reach.
+        """
         upcoming_stride = (self.stride_index + 1) % len(self.strides)
         next_foot_pos = self.get_next_foot_on_axis(foot_pos, axis)
         return next_foot_pos + self.strides[upcoming_stride][axis]
 
 
 class LIPMWalkingTrajectory(Trajectory):
+    """Move a frame along the center of mass of a walking LIPM.
+
+    The horizontal trajectory of the center of mass is planned by the model
+    predictive control problem of ``build_mpc_problem`` over a receding
+    horizon, with its ZMP constrained to the footholds that ``PhaseStepper``
+    walks through. A new plan is computed every sampling period, then its
+    first jerk input is integrated over the (shorter) timesteps of the
+    inverse kinematics in between.
+
+    Targets are usually tracked by a task on the root joint, offset by
+    ``transform_target_to_root``. Pair this trajectory with one
+    ``SwingFootTrajectory`` per foot, sharing the same phase durations and
+    stride, to get a walking scenario.
+    """
+
     def __init__(
         self,
         task: pink.tasks.FrameTask,
@@ -230,7 +342,7 @@ class LIPMWalkingTrajectory(Trajectory):
             task: Frame task targetting the root joint.
             dsp_duration: Duration of double-support phases, in seconds.
             foot_size: Foot dimensions (half-length, half-width), in meters.
-            init_vel_scale: Initial velocity scaling (no unit).
+            foot_spacing: Distance between left and right footholds, in meters.
             lateral_offset: Lateral offset between initial foot frames and foot
                 targets (see SwingFootTrajectory).
             left_foot_frame: Name of left-foot frame in the robot model.
@@ -238,11 +350,13 @@ class LIPMWalkingTrajectory(Trajectory):
                 optimal control problem.
             sampling_period: Discrete time steps of the optimal control
                 problem, in seconds.
-            foot_spacing: Distance between left and right footholds, in meters.
             ssp_duration: Duration of single-support phases, in seconds.
             stride: Forward stepping distance, in meters.
             transform_target_to_root: Offset applied between the root frame and
                 the task target frame.
+            annotate_viz: If set, draw footholds and past targets in the
+                viewer.
+            init_vel_scale: Initial velocity scaling (no unit).
             plot_axis: If set, plot open-loop MPC trajectories.
         """
         super().__init__(task)
@@ -276,6 +390,11 @@ class LIPMWalkingTrajectory(Trajectory):
         self.transform_target_to_root = transform_target_to_root
 
     def init_plot(self, plot_axis: int) -> None:
+        """Start plotting the open-loop MPC trajectories live.
+
+        Args:
+            plot_axis: Index of the axis (0 for x, 1 for y) to plot.
+        """
         horizon_duration = self.sampling_period * self.nb_timesteps
         self.__live_plot = LivePlot(
             xlim=(0, horizon_duration + self.sampling_period),
@@ -292,6 +411,22 @@ class LIPMWalkingTrajectory(Trajectory):
         self.plot_axis = plot_axis
 
     def reset(self, configuration: pink.Configuration, viewer: Visualizer):
+        """Reset the trajectory to a robot configuration.
+
+        The first foothold is located from the left-foot frame, and the
+        natural frequency of the pendulum derived from the corresponding
+        center-of-mass height, which fixes the MPC problem. The initial state
+        has its ZMP at the center of that foothold, its position at the task
+        frame and its velocity scaled by ``init_vel_scale``.
+
+        Args:
+            configuration: Initial configuration of the robot.
+            viewer: MeshCat viewer, used for annotations when
+                ``annotate_viz`` is set.
+
+        Raises:
+            AssertionError: if the task frame is not above the left foot.
+        """
         super().reset(configuration, viewer)
         self.phase.reset()
 
@@ -380,6 +515,7 @@ class LIPMWalkingTrajectory(Trajectory):
             )
 
     def update_plot(self):
+        """Update the live plot with the current state and goal."""
         horizon_duration = self.sampling_period * self.nb_timesteps
         cur_pos = self.state[self.plot_axis][0]
         cur_acc = self.state[self.plot_axis][2]
@@ -394,6 +530,12 @@ class LIPMWalkingTrajectory(Trajectory):
         self.__live_plot.update()
 
     def replan(self):
+        """Plan the center of mass over the next receding horizon.
+
+        Both horizontal axes are planned separately from the current state,
+        then the phase clock advances by one timestep; when it wraps around to
+        a new step, the support foot moves on to the next foothold.
+        """
         for axis in (0, 1):
             self.mpc_problem.update_initial_state(self.state[axis])
             self.update_goal_and_constraints(axis)
@@ -422,6 +564,16 @@ class LIPMWalkingTrajectory(Trajectory):
         self.substep_duration = self.sampling_period
 
     def update_goal_and_constraints(self, axis: int):
+        """Update the MPC problem for the current walking phase.
+
+        ZMP inequalities are relaxed over the double-support phases of the
+        horizon, and restricted to the support area of the foothold in stance
+        over the single-support ones. The goal position is the last foothold
+        the horizon reaches.
+
+        Args:
+            axis: Index of the axis (0 for x, 1 for y) to update.
+        """
         (
             nb_init_dsp_steps,
             nb_init_ssp_steps,

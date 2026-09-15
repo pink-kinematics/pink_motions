@@ -19,6 +19,18 @@ def play_scenario(
     record: bool = False,
     plot_mpc_axis: Optional[str] = None,
 ):
+    """Unroll a scenario of the library, pacing it to real time.
+
+    Args:
+        name: Name of the scenario, from the bench library.
+        dt: Timestep between differential IK problems, in seconds. The
+            scenario is played back at that rate.
+        qpsolver: Backend QP solver.
+        visualize: If true (default), display the robot in MeshCat.
+        record: If true, save a picture of each frame to ``videos/``.
+        plot_mpc_axis: Axis, ``"x"`` or ``"y"``, whose model predictive
+            control plan to plot live. Defaults to no plot.
+    """
     scenario = SCENARIOS[name]
     scene = Scene(scenario, visualize=visualize, record=record)
     if plot_mpc_axis is not None:

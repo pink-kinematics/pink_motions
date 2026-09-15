@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
+"""Robot, tasks and trajectories of a scenario, unrolled together."""
+
 from pathlib import Path
 from typing import List, Optional
 
@@ -52,6 +54,23 @@ def make_limits(
 
 
 class Scene:
+    """One scenario of the library, ready to be unrolled.
+
+    A scene loads the robot of a scenario, places it at its initial
+    configuration and resets the scenario's trajectories from there. Each
+    call to :func:`step` moves the task targets by one timestep, solves the
+    resulting differential IK problem and integrates the robot velocity.
+
+    Trajectories read the configuration only when they are reset, and are
+    pure functions of time afterwards, so a scene unrolls open-loop.
+
+    Attributes:
+        configuration: Configuration of the robot, updated at every step.
+        limits: Limits enforced on top of the model's, ``None`` when the
+            scenario adds none.
+        robot: Robot model, data and initial configuration.
+    """
+
     configuration: pink.Configuration
     robot: pin.RobotWrapper
 
@@ -141,11 +160,21 @@ class Scene:
         self.visualizer = visualizer
 
     def plot_mpc_axis(self, plot_axis: int) -> None:
+        """Plot the model predictive control plan along one axis.
+
+        Args:
+            plot_axis: Index of the axis to plot, 0 for x and 1 for y.
+        """
         for trajectory in self.trajectories:
             if isinstance(trajectory, LIPMWalkingTrajectory):
                 trajectory.init_plot(plot_axis)
 
     def reset(self):
+        """Put the robot back at its initial configuration.
+
+        Trajectories are reset from there, so that unrolling the scene
+        again reproduces the same sequence of targets.
+        """
         model = self.robot.model
         data = self.robot.data
         if self.visualizer is not None:
@@ -156,10 +185,12 @@ class Scene:
 
     @property
     def tasks(self) -> List[pink.Task]:
+        """Tasks of the scene, one per trajectory."""
         return [trajectory.task for trajectory in self.trajectories]
 
     @property
     def frame_tasks(self) -> List[FrameTask]:
+        """Frame tasks of the scene, a subset of its tasks."""
         return [
             trajectory.task
             for trajectory in self.trajectories
