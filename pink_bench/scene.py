@@ -1,13 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import meshcat_shapes
+import numpy as np
 import pink
 import pinocchio as pin
 from numpy.typing import NDArray
 from pink import solve_ik
+from pink.limits import VelocityLimit
 from pink.tasks import FrameTask
 from pink.utils import custom_configuration_vector
 from pink.visualization import start_meshcat_visualizer
@@ -15,6 +17,38 @@ from robot_descriptions.loaders.pinocchio import load_robot_description
 
 from .scenario import Scenario
 from .trajectories import LIPMWalkingTrajectory
+
+
+def make_limits(
+    model, scenario: Scenario
+) -> Optional[List[pink.limits.Limit]]:
+    """Assemble the limits a scenario enforces on top of its model's.
+
+    Robots whose joints are all continuous carry neither a configuration
+    nor a velocity limit, which would leave their IK problem an
+    unconstrained QP. Scenarios bound those with an explicit uniform
+    velocity limit, a pure tangent-space box that never touches the cos/sin
+    configuration of a continuous joint.
+
+    Args:
+        model: Robot model of the scenario.
+        scenario: Scenario whose limits are assembled.
+
+    Returns:
+        List of limits, or ``None`` when the scenario adds none, so that
+        ``solve_ik`` falls back to the limits of the model.
+    """
+    if scenario.velocity_limit is None:
+        return None
+    v_max = scenario.velocity_limit * np.ones(model.nv)
+    limits = [
+        model.configuration_limit,
+        VelocityLimit(model, velocity_limit=v_max),
+    ]
+    floating_base_limit = getattr(model, "floating_base_velocity_limit", None)
+    if floating_base_limit is not None:
+        limits.append(floating_base_limit)
+    return limits
 
 
 class Scene:
@@ -96,6 +130,7 @@ class Scene:
                 meshcat_shapes.frame(viewer[f"{frame}_target"], opacity=0.5)
 
         self.configuration = configuration
+        self.limits = make_limits(configuration.model, scenario)
         self.record = record
         self.recording_index = 0
         self.q_init = q_init
@@ -180,5 +215,6 @@ class Scene:
             self.tasks,
             dt,
             solver=solver,
+            limits=self.limits,
         )
         self.step_velocity(velocity, dt)

@@ -30,6 +30,7 @@ SCENARIOS["edo"] = Scenario(
     name="edo",
     duration=10.0,  # [s]
     robot_description="edo_description",
+    velocity_limit=2.0,  # [rad] / [s]
     initial_configuration={
         "joint_1": [-0.7623581513637019, 0.6471553515573514],
         "joint_2": [0.0342308422806942, 0.9994139529928298],
@@ -168,6 +169,7 @@ SCENARIOS["poppy_ergo_jr"] = Scenario(
     name="poppy_ergo_jr",
     duration=10.0,  # [s]
     robot_description="poppy_ergo_jr_description",
+    velocity_limit=12.0,  # [rad] / [s]
     trajectories=[
         BackAndForthTrajectory(
             FrameTask(
