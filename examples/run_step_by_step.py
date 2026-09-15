@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # /// script
-# requires-python = ">=3.9"
+# requires-python = ">=3.11"
 # dependencies = [
 #   "loop-rate-limiters>=0.1.0",
 #   "numpy",

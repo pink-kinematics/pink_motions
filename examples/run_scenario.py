@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 # /// script
-# requires-python = ">=3.9"
+# requires-python = ">=3.11"
 # dependencies = [
 #   "pink_bench",
 #   "qpsolvers>=4.3.1",
