@@ -41,9 +41,9 @@ class TestLibrary:
         # These are common robot names that should be in the library
         common_scenarios = ["panda", "ur3", "ur5"]
         for scenario_name in common_scenarios:
-            assert (
-                scenario_name in SCENARIOS
-            ), f"Expected scenario '{scenario_name}' not found"
+            assert scenario_name in SCENARIOS, (
+                f"Expected scenario '{scenario_name}' not found"
+            )
 
     def test_scenario_trajectories_list(self):
         """Test that scenario trajectories are lists."""
