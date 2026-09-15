@@ -11,11 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CICD: Add coverage, lint and test workflows
 - examples: Record videos for all or some scenarios in the library
+- Support custom velocity limits for robot descriptions with continuous joints
 - Support pixi for development and running examples
 
 ### Changed
 
 - examples: Rename scenario parg to --robot kwarg
+- Transfer copyright notices to `NOTICE` file
 
 ### Removed
 
