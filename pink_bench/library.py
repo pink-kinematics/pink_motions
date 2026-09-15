@@ -106,16 +106,18 @@ SCENARIOS["gen2"] = Scenario(
 SCENARIOS["gen3"] = Scenario(
     name="gen3",
     duration=10.0,  # [s]
-    robot_description="gen3_description",
+    robot_description="gen3_description",  # 7-dof Kinova Gen3
     initial_configuration={
-        "j2n6s300_joint_2": 2.5,
-        "j2n6s300_joint_3": 4.0,
-        "j2n6s300_joint_5": [0.0, 1.0],
+        # Bend the limited joints (2, 4, 6) into a non-singular pose; the
+        # continuous joints (1, 3, 5, 7) start at zero.
+        "joint_2": 0.4,
+        "joint_4": 1.4,
+        "joint_6": 1.0,
     },
     trajectories=[
         BackAndForthTrajectory(
             FrameTask(
-                "j2n6s300_end_effector",
+                "tool_frame",
                 position_cost=1.0,  # [cost] / [m]
                 orientation_cost=1.0,  # [cost] / [rad]
             ),
@@ -187,11 +189,11 @@ SCENARIOS["poppy_ergo_jr"] = Scenario(
 SCENARIOS["ur10"] = Scenario(
     name="ur10",
     duration=10.0,  # [s]
-    robot_description="ur10_description",
+    robot_description="ur10_official_description",
     trajectories=[
         BackAndForthTrajectory(
             FrameTask(
-                "ee_link",
+                "tool0",
                 position_cost=1.0,  # [cost] / [m]
                 orientation_cost=1.0,  # [cost] / [rad]
             ),
@@ -205,11 +207,11 @@ SCENARIOS["ur10"] = Scenario(
 SCENARIOS["ur3"] = Scenario(
     name="ur3",
     duration=10.0,  # [s]
-    robot_description="ur3_description",
+    robot_description="ur3_official_description",
     trajectories=[
         BackAndForthTrajectory(
             FrameTask(
-                "ee_link",
+                "tool0",
                 position_cost=1.0,  # [cost] / [m]
                 orientation_cost=1.0,  # [cost] / [rad]
             ),
@@ -223,11 +225,11 @@ SCENARIOS["ur3"] = Scenario(
 SCENARIOS["ur5"] = Scenario(
     name="ur5",
     duration=10.0,  # [s]
-    robot_description="ur5_description",
+    robot_description="ur5_official_description",
     trajectories=[
         BackAndForthTrajectory(
             FrameTask(
-                "ee_link",
+                "tool0",
                 position_cost=1.0,  # [cost] / [m]
                 orientation_cost=1.0,  # [cost] / [rad]
             ),

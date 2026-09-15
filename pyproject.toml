@@ -28,19 +28,20 @@ dependencies = [
     "clarabel",
     "loop-rate-limiters >=0.1.0",
     "matplotlib",
-    "pin-pink >=3.1.0",
+    "pin-pink >=4.4.0",
     "qpmpc >=2.6.3,<4",
     "qpsolvers >=4.3.1",
-    "robot_descriptions >=1.13.0",
+    "robot_descriptions >=3.0.0",
+    "xacrodoc",
 ]
 keywords = ["inverse", "kinematics", "pinocchio"]
 
 [project.urls]
-Homepage = "https://stephane-caron.github.io/pink_bench/"
-Documentation = "https://stephane-caron.github.io/pink_bench/"
-Source = "https://github.com/stephane-caron/pink_bench"
-Tracker = "https://github.com/stephane-caron/pink_bench/issues"
-Changelog = "https://github.com/stephane-caron/pink_bench/blob/main/CHANGELOG.md"
+Homepage = "https://pink-kinematics.github.io/pink_bench/"
+Documentation = "https://pink-kinematics.github.io/pink_bench/"
+Source = "https://github.com/pink-kinematics/pink_bench"
+Tracker = "https://github.com/pink-kinematics/pink_bench/issues"
+Changelog = "https://github.com/pink-kinematics/pink_bench/blob/main/CHANGELOG.md"
 
 [tool.coverage.run]
 source = ["pink_bench"]
