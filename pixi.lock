@@ -16381,6 +16381,8 @@ packages:
   - clarabel
   - loop-rate-limiters>=0.1.0
   - matplotlib
+  - meshcat>=0.3.2
+  - meshcat-shapes>=0.3.0
   - pin-pink>=4.4.0
   - qpmpc>=2.6.3,<4
   - qpsolvers>=4.3.1
