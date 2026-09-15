@@ -2,12 +2,7 @@
 #
 # /// script
 # requires-python = ">=3.11"
-# dependencies = [
-#   "loop-rate-limiters>=0.1.0",
-#   "numpy",
-#   "pink_bench",
-#   "qpsolvers>=4.3.1",
-# ]
+# dependencies = ["clarabel", "meshcat-shapes", "pink_bench"]
 # ///
 
 """Create a scene and step it problem by problem."""

@@ -2,10 +2,7 @@
 #
 # /// script
 # requires-python = ">=3.11"
-# dependencies = [
-#   "pink_bench",
-#   "qpsolvers>=4.3.1",
-# ]
+# dependencies = ["clarabel", "meshcat-shapes", "pink_bench"]
 # ///
 
 """Run a given scenario from the library."""
