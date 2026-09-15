@@ -10,14 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - CICD: Add coverage, lint and test workflows
-- examples: Record videos for all or some scenarios in the library
 - Support custom velocity limits for robot descriptions with continuous joints
 - Support pixi for development and running examples
+- examples: Record videos for all or some scenarios in the library
 
 ### Changed
 
-- examples: Rename scenario parg to --robot kwarg
+- Bump minimum Python version to 3.10
 - Transfer copyright notices to `NOTICE` file
+- examples: Rename scenario parg to --robot kwarg
 
 ### Removed
 

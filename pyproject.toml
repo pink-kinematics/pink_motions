@@ -12,14 +12,13 @@ maintainers = [
     {name = "Stéphane Caron", email = "stephane.caron@normalesup.org"},
 ]
 dynamic = ['version', 'description']
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Framework :: Robot Framework :: Library",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -98,7 +97,7 @@ meshcat-python = "*"
 meshcat-shapes = ">=0.3.0"
 pink = ">=3.1.0"
 proxsuite = "*"
-python = ">=3.9"
+python = ">=3.10"
 
 [tool.pixi.feature.coverage.dependencies]
 coverage = ">=7.0"
@@ -116,9 +115,6 @@ ruff = "*"
 [tool.pixi.feature.dev.tasks]
 format = "ruff format ."
 lint = "ruff check ."
-
-[tool.pixi.feature.py39.dependencies]
-python = "3.9.*"
 
 [tool.pixi.feature.py310.dependencies]
 python = "3.10.*"
@@ -140,7 +136,6 @@ default = { solve-group = "default" }
 dev = { features = ["dev"], solve-group = "default" }
 test = { features = ["test"], solve-group = "default" }
 coverage = { features = ["py312", "test", "coverage"], solve-group = "py312" }
-test-py39 = { features = ["test", "py39"], solve-group = "py39" }
 test-py310 = { features = ["test", "py310"], solve-group = "py310" }
 test-py311 = { features = ["test", "py311"], solve-group = "py311" }
 test-py312 = { features = ["test", "py312"], solve-group = "py312" }
