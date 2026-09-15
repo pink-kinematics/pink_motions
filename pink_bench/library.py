@@ -2,7 +2,13 @@
 # -*- coding: utf-8 -*-
 #
 # SPDX-License-Identifier: Apache-2.0
-# Copyright 2024 Inria
+
+"""Benchmark scenarios: a robot, an initial pose and a task trajectory.
+
+Each entry of ``SCENARIOS`` specifies a Pink task and the robot
+description it runs on; the descriptions come from ``robot_descriptions``,
+pinned exactly so that every machine loads the same robots.
+"""
 
 from typing import Dict
 
