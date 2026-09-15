@@ -105,17 +105,17 @@ coverage = ">=7.0"
 coveralls = ">=4.0.0"
 
 [tool.pixi.feature.coverage.tasks]
-coverage-erase = "coverage erase"
-coverage-run = { cmd = "coverage run -m pytest tests/ -v", depends-on = ["coverage-erase"] }
-coverage = { cmd = "coverage report --include=\"pink_bench/*\"", depends-on = ["coverage-run"] }
-coveralls = "coveralls --service=github"
+_coverage-erase = "coverage erase"
+_coverage-run = { cmd = "coverage run -m pytest tests/ -v", depends-on = ["_coverage-erase"] }
+_coveralls = "coveralls --service=github"
+dev-coverage = { cmd = "coverage report --include=\"pink_bench/*\"", depends-on = ["_coverage-run"] }
 
-[tool.pixi.feature.dev.dependencies]
+[tool.pixi.feature.lint.dependencies]
 ruff = "*"
 
-[tool.pixi.feature.dev.tasks]
-format = "ruff format ."
-lint = "ruff check ."
+[tool.pixi.feature.lint.tasks]
+dev-format = "ruff format ."
+dev-lint = "ruff check ."
 
 [tool.pixi.feature.py311.dependencies]
 python = "3.11.*"
@@ -127,13 +127,13 @@ python = "3.12.*"
 pytest = ">=7.0"
 
 [tool.pixi.feature.test.tasks]
-test = "pytest tests/ -v"
+dev-test = "pytest tests/ -v"
 
 [tool.pixi.environments]
 default = { solve-group = "default" }
-dev = { features = ["dev"], solve-group = "default" }
-test = { features = ["test"], solve-group = "default" }
 coverage = { features = ["py312", "test", "coverage"], solve-group = "py312" }
+lint = { features = ["lint"], solve-group = "default" }
+test = { features = ["test"], solve-group = "default" }
 test-py311 = { features = ["test", "py311"], solve-group = "py311" }
 test-py312 = { features = ["test", "py312"], solve-group = "py312" }
 
