@@ -16376,7 +16376,7 @@ packages:
   size: 387535
   timestamp: 1786599623274
 - pypi: ./
-  name: pink-bench
+  name: pink-motions
   requires_dist:
   - clarabel
   - loop-rate-limiters>=0.1.0
