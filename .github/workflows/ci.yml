@@ -48,7 +48,7 @@ jobs:
 
             - name: "Check code format"
               run: |
-                  pixi run -e dev dev-lint
+                  pixi run -e lint dev-lint
 
     test:
         name: "Test with ${{ matrix.pyenv }} on ${{ matrix.os }}"
