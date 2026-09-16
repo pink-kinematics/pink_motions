@@ -10,25 +10,25 @@ A library of robot motions performed by inverse kinematics and model predictive 
 
 ## Usage
 
-The recommended way to use pink motions is with [pixi](https://pixi.sh), which handles all dependencies automatically:
+You can try out a scenario from the library directly using [pixi](https://pixi.sh):
 
 ```console
-git clone https://github.com/stephane-caron/pink_motions.git
-cd pink_motions
 pixi run scenario --robot ur5 --qpsolver quadprog
 ```
 
-This will open a MeshCat tab in your web browser playing the scenario for its prescribed duration.
-
-This task is just an alias to [`examples/run_scenario.py`](examples/run_scenario.py), which simply calls:
+Or equivalently `uv run examples/play_scenario.py` with the same arguments. In Python, this example simply does:
 
 ```py
+import pink_motions
+
 pink_motions.play_scenario(
-    name="jaxon",
-    dt=0.005,  # seconds
-    qpsolver="proxqp",
+    name="ur5",
+    dt=0.005,  # timestep in seconds
+    qpsolver="quadprog",
 )
 ```
+
+This will open a MeshCat tab in your web browser playing the scenario for its prescribed duration.
 
 ## See also
 

@@ -22,12 +22,6 @@ if __name__ == "__main__":
         choices=list([name for name in pink_motions.SCENARIOS.keys()]),
     )
     parser.add_argument(
-        "--dt",
-        help="Timestep in seconds between differential IK problems",
-        type=float,
-        default=0.005,
-    )
-    parser.add_argument(
         "--qpsolver",
         help="solver for the QP-based approach",
         default="clarabel",
@@ -36,6 +30,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     pink_motions.play_scenario(
         name=args.robot,
-        dt=args.dt,
+        dt=0.005,
         qpsolver=args.qpsolver,
     )
