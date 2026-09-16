@@ -136,6 +136,7 @@ default = { solve-group = "default" }
 coverage = { features = ["py312", "test", "coverage"], solve-group = "py312" }
 lint = { features = ["lint"], solve-group = "default" }
 test = { features = ["test"], solve-group = "default" }
+test-py310 = { features = ["test", "py310"], solve-group = "py310" }
 test-py311 = { features = ["test", "py311"], solve-group = "py311" }
 test-py312 = { features = ["test", "py312"], solve-group = "py312" }
 
