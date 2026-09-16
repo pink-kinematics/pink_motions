@@ -25,7 +25,7 @@ jobs:
 
             - name: "Run coverage tests"
               run: |
-                  pixi run -e coverage coverage
+                  pixi run -e coverage dev-coverage
 
             - name: "Upload coverage results"
               env:
@@ -48,7 +48,7 @@ jobs:
 
             - name: "Check code format"
               run: |
-                  pixi run -e dev lint
+                  pixi run -e dev dev-lint
 
     test:
         name: "Test with ${{ matrix.pyenv }} on ${{ matrix.os }}"
@@ -70,7 +70,7 @@ jobs:
 
             - name: "Run unit tests"
               run: |
-                  pixi run -e test-${{ matrix.pyenv }} test
+                  pixi run -e test-${{ matrix.pyenv }} dev-test
 
     ci_success:
         name: "CI success"
