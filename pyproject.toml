@@ -92,6 +92,9 @@ ruff = "*"
 dev-format = "ruff format ."
 dev-lint = "ruff check ."
 
+[tool.pixi.feature.py310.dependencies]
+python = "3.10.*"
+
 [tool.pixi.feature.py311.dependencies]
 python = "3.11.*"
 
