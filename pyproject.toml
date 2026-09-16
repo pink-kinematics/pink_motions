@@ -92,14 +92,14 @@ ruff = "*"
 dev-format = "ruff format ."
 dev-lint = "ruff check ."
 
-[tool.pixi.feature.py310.dependencies]
-python = "3.10.*"
-
 [tool.pixi.feature.py311.dependencies]
 python = "3.11.*"
 
 [tool.pixi.feature.py312.dependencies]
 python = "3.12.*"
+
+[tool.pixi.feature.py313.dependencies]
+python = "3.13.*"
 
 [tool.pixi.feature.test.dependencies]
 pytest = ">=7.0"
@@ -112,9 +112,9 @@ default = { solve-group = "default" }
 coverage = { features = ["py312", "test", "coverage"], solve-group = "py312" }
 lint = { features = ["lint"], solve-group = "default" }
 test = { features = ["test"], solve-group = "default" }
-test-py310 = { features = ["test", "py310"], solve-group = "py310" }
 test-py311 = { features = ["test", "py311"], solve-group = "py311" }
 test-py312 = { features = ["test", "py312"], solve-group = "py312" }
+test-py313 = { features = ["test", "py313"], solve-group = "py313" }
 
 [tool.pixi.tasks]
 scenario = "python examples/run_scenario.py"
