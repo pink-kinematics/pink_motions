@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2025-09-16
+
 ### Added
 
 - CICD: Add coverage, lint and test workflows
@@ -17,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Breaking:** Rename the library to pink motions
 - Bump minimum Pink version to 4.4.0
 - Bump minimum Python version to 3.11
 - Scenarios: update the 7-dof Kinova Gen3 description
@@ -37,6 +40,7 @@ Still a work in progress. Changelog will start from next version.
 
 Work-in-progress version of the project.
 
-[unreleased]: https://github.com/stephane-caron/pink_motions/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/stephane-caron/pink_motions/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/stephane-caron/pink_motions/releases/tag/v0.1.0
+[unreleased]: https://github.com/pink-kinematics/pink_motions/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/pink-kinematics/pink_motions/releases/tag/v0.3.0
+[0.2.0]: https://github.com/pink-kinematics/pink_motions/releases/tag/v0.2.0
+[0.1.0]: https://github.com/pink-kinematics/pink_motions/releases/tag/v0.1.0
