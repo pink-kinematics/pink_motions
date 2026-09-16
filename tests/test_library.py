@@ -2,7 +2,7 @@
 
 """Tests for the scenario library."""
 
-from pink_bench import SCENARIOS, Scenario
+from pink_motions import SCENARIOS, Scenario
 
 
 class TestLibrary:

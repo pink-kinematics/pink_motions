@@ -2,7 +2,7 @@
 
 """Tests for the Scenario dataclass."""
 
-from pink_bench import Scenario
+from pink_motions import Scenario
 
 
 class TestScenario:

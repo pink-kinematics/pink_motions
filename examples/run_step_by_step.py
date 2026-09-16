@@ -2,7 +2,7 @@
 #
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["clarabel", "meshcat-shapes", "pink_bench"]
+# dependencies = ["clarabel", "meshcat-shapes", "pink_motions"]
 # ///
 
 """Create a scene and step it problem by problem."""
@@ -14,14 +14,14 @@ import qpsolvers
 from loop_rate_limiters import RateLimiter
 from pink import build_ik
 
-import pink_bench
+import pink_motions
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "scenario",
-        help="scenario to run from the pink_bench library",
-        choices=list([name for name in pink_bench.SCENARIOS.keys()]),
+        help="scenario to run from the pink motions library",
+        choices=list([name for name in pink_motions.SCENARIOS.keys()]),
     )
     parser.add_argument(
         "--dt",
@@ -42,8 +42,8 @@ if __name__ == "__main__":
         choices=qpsolvers.available_solvers,
     )
     args = parser.parse_args()
-    scenario = pink_bench.SCENARIOS[args.scenario]
-    scene = pink_bench.Scene(scenario, visualize=True)
+    scenario = pink_motions.SCENARIOS[args.scenario]
+    scene = pink_motions.Scene(scenario, visualize=True)
     if args.plot_mpc_axis is not None:
         scene.plot_mpc_axis(0 if args.plot_mpc_axis == "x" else 1)
     rate = RateLimiter(frequency=1.0 / args.dt, warn=False)

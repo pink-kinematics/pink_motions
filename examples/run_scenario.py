@@ -2,7 +2,7 @@
 #
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["clarabel", "meshcat-shapes", "pink_bench"]
+# dependencies = ["clarabel", "meshcat-shapes", "pink_motions"]
 # ///
 
 """Run a given scenario from the library."""
@@ -11,15 +11,15 @@ import argparse
 
 import qpsolvers
 
-import pink_bench
+import pink_motions
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--robot",
         required=True,
-        help="scenario to run from the pink_bench library",
-        choices=list([name for name in pink_bench.SCENARIOS.keys()]),
+        help="scenario to run from the pink motions library",
+        choices=list([name for name in pink_motions.SCENARIOS.keys()]),
     )
     parser.add_argument(
         "--dt",
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         choices=qpsolvers.available_solvers,
     )
     args = parser.parse_args()
-    pink_bench.play_scenario(
+    pink_motions.play_scenario(
         name=args.robot,
         dt=args.dt,
         qpsolver=args.qpsolver,

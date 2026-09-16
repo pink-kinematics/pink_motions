@@ -3,7 +3,7 @@ requires = ["flit_core >=2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "pink_bench"
+name = "pink_motions"
 readme = "README.md"
 authors = [
     {name = "Stéphane Caron", email = "stephane.caron@normalesup.org"},
@@ -38,14 +38,14 @@ dependencies = [
 keywords = ["inverse", "kinematics", "pinocchio"]
 
 [project.urls]
-Homepage = "https://pink-kinematics.github.io/pink_bench/"
-Documentation = "https://pink-kinematics.github.io/pink_bench/"
-Source = "https://github.com/pink-kinematics/pink_bench"
-Tracker = "https://github.com/pink-kinematics/pink_bench/issues"
-Changelog = "https://github.com/pink-kinematics/pink_bench/blob/main/CHANGELOG.md"
+Homepage = "https://pink-kinematics.github.io/pink_motions/"
+Documentation = "https://pink-kinematics.github.io/pink_motions/"
+Source = "https://github.com/pink-kinematics/pink_motions"
+Tracker = "https://github.com/pink-kinematics/pink_motions/issues"
+Changelog = "https://github.com/pink-kinematics/pink_motions/blob/main/CHANGELOG.md"
 
 [tool.coverage.run]
-source = ["pink_bench"]
+source = ["pink_motions"]
 omit = ["*/tests/*"]
 
 [tool.coverage.report]
@@ -90,7 +90,7 @@ channels = ["conda-forge"]
 platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
 
 [tool.pixi.pypi-dependencies]
-pink_bench = { path = ".", editable = true }
+pink_motions = { path = ".", editable = true }
 
 [tool.pixi.dependencies]
 clarabel = "*"
@@ -110,7 +110,7 @@ coveralls = ">=4.0.0"
 _coverage-erase = "coverage erase"
 _coverage-run = { cmd = "coverage run -m pytest tests/ -v", depends-on = ["_coverage-erase"] }
 _coveralls = "coveralls --service=github"
-dev-coverage = { cmd = "coverage report --include=\"pink_bench/*\"", depends-on = ["_coverage-run"] }
+dev-coverage = { cmd = "coverage report --include=\"pink_motions/*\"", depends-on = ["_coverage-run"] }
 
 [tool.pixi.feature.lint.dependencies]
 ruff = "*"

@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"""Benchmark scenarios: a robot, an initial pose and a task trajectory.
+"""Motion library: robots, initial poses and task trajectories.
 
 Each entry of ``SCENARIOS`` specifies a Pink task and the robot
 description it runs on; the descriptions come from ``robot_descriptions``,

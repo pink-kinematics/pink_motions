@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"""Pytest configuration and fixtures for pink_bench tests."""
+"""Pytest configuration and fixtures for pink motions."""
 
 import pinocchio as pin
 import pytest

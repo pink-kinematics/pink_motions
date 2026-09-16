@@ -22,7 +22,7 @@ def play_scenario(
     """Unroll a scenario of the library, pacing it to real time.
 
     Args:
-        name: Name of the scenario, from the bench library.
+        name: Name of the scenario in the library.
         dt: Timestep between differential IK problems, in seconds. The
             scenario is played back at that rate.
         qpsolver: Backend QP solver.

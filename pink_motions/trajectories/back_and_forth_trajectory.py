@@ -19,8 +19,7 @@ class BackAndForthTrajectory(Trajectory):
 
     The target oscillates between ``start_position`` and ``stop_position``
     following a squared sine of time, while rocking in yaw and roll with
-    the same phase. It sweeps a sizeable portion of the workspace of an
-    arm, which is what the arm scenarios of the bench library use it for.
+    the same phase.
     """
 
     def __init__(

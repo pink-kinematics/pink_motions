@@ -11,11 +11,10 @@ from pink import Configuration, Task
 class Trajectory:
     """Time-varying target for a single inverse kinematics task.
 
-    A trajectory owns one task and moves its target as time advances.
-    Scenarios of the bench library are lists of trajectories: they are
-    reset once from the initial configuration of the robot, then unrolled
-    open-loop by repeated calls to ``step``. Subclasses implement that
-    method.
+    A trajectory owns exactly one task and moves its target as time advances.
+    Scenarios of the library are lists of trajectories: they are reset once
+    from the initial configuration of the robot, then unrolled open-loop by
+    repeated calls to the ``step`` method, which subclasses should implement.
 
     Attributes:
         task: Task whose target this trajectory moves.

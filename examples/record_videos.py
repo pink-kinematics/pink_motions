@@ -2,7 +2,7 @@
 #
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["clarabel", "meshcat-shapes", "pink_bench"]
+# dependencies = ["clarabel", "meshcat-shapes", "pink_motions"]
 # ///
 
 """Record a video of each scenario of the library, or of some of them."""
@@ -16,7 +16,7 @@ from typing import List
 
 import qpsolvers
 
-import pink_bench
+import pink_motions
 
 
 def parse_command_line_arguments() -> argparse.Namespace:
@@ -35,7 +35,7 @@ def parse_command_line_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--scenario",
         help="record video only for a single scenario",
-        choices=list([name for name in pink_bench.SCENARIOS.keys()]),
+        choices=list([name for name in pink_motions.SCENARIOS.keys()]),
     )
     parser.add_argument(
         "--dt",
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     scenarios: List[str] = (
         [args.scenario]
         if args.scenario is not None
-        else list(pink_bench.SCENARIOS.keys())
+        else list(pink_motions.SCENARIOS.keys())
     )
     data_dir = Path(__file__).resolve().parent.parent / "data"
     for scenario_name in scenarios:
@@ -99,8 +99,8 @@ if __name__ == "__main__":
             print(f"Skipping {scenario_name} as video exists...")
             continue
         print(f'Recording video for scenario "{scenario_name}"...')
-        scenario = pink_bench.SCENARIOS[scenario_name]
-        pink_bench.play_scenario(
+        scenario = pink_motions.SCENARIOS[scenario_name]
+        pink_motions.play_scenario(
             name=scenario_name,
             dt=args.dt,
             qpsolver=args.qpsolver,
