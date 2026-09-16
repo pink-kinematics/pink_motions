@@ -102,9 +102,6 @@ python = "3.12.*"
 [tool.pixi.feature.py313.dependencies]
 python = "3.13.*"
 
-[tool.pixi.feature.py314.dependencies]
-python = "3.14.*"
-
 [tool.pixi.feature.test.dependencies]
 pytest = ">=7.0"
 
@@ -119,7 +116,6 @@ test = { features = ["test"], solve-group = "default" }
 test-py311 = { features = ["test", "py311"], solve-group = "py311" }
 test-py312 = { features = ["test", "py312"], solve-group = "py312" }
 test-py313 = { features = ["test", "py313"], solve-group = "py313" }
-test-py314 = { features = ["test", "py314"], solve-group = "py313" }
 
 [tool.pixi.tasks]
 scenario = "python examples/play_scenario.py"
