@@ -1,5 +1,6 @@
 # Pink motions
 
+[![Build](https://img.shields.io/github/actions/workflow/status/pink-kinematics/pink_motions/ci.yml?branch=main)](https://github.com/pink-kinematics/pink_motions/actions)
 [![PyPI version](https://img.shields.io/pypi/v/pink_motions)](https://pypi.org/project/pink_motions/)
 
 A library of robot motions performed by inverse kinematics and model predictive control:
