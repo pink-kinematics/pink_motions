@@ -35,11 +35,11 @@ This will open a MeshCat tab in your web browser playing the scenario for its pr
 
 Pink motions are specified using a combination of several open-source libraries:
 
-- [robot\_descriptions.py](https://github.com/robot-descriptions/robot_descriptions.py) to load robot descriptions
-- [Pinocchio](https://github.com/stack-of-tasks/pinocchio/) for forward kinematics functions: Jacobians, Jlog6, ...
 - [MeshCat](https://github.com/meshcat-dev/meshcat-python) for (optional) visualization
 - [Pink](https://github.com/pink-kinematics/pink) for differential inverse kinematics
+- [Pinocchio](https://github.com/stack-of-tasks/pinocchio/) for forward kinematics functions: Jacobians, Jlog6, ...
 - [qpmpc](https://github.com/stephane-caron/qpmpc) for linear model predictive control, used in biped and humanoid scenarios
+- [robot\_descriptions.py](https://github.com/robot-descriptions/robot_descriptions.py) to load robot descriptions
 
 The library is also related to the following projects:
 
