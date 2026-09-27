@@ -45,3 +45,4 @@ The library is also related to the following projects:
 
 - [ik\_qpbenchmark](https://github.com/qpsolvers/ik_qpbenchmark): Test set for QP solvers with differential IK problems generated from pink motions.
 - [LoIK](https://github.com/Simple-Robotics/LoIK): Constrained differential inverse kinematics solver that was evaluated on pink motions.
+- [Pinker](https://github.com/pink-kinematics/pinker): Next-generation differential inverse kinematics library, which was benchmarked using pink motions.
