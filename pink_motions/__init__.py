@@ -7,7 +7,7 @@ from .play_scenario import play_scenario
 from .scenario import Scenario
 from .scene import Scene
 
-__version__ = "0.3.0"
+__version__ = "1.0.0"
 
 __all__ = [
     "play_scenario",

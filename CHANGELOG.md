@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-27
+
 ### Added
 
 - Support Python 3.13
@@ -48,7 +50,8 @@ Still a work in progress. Changelog will start from next version.
 
 Work-in-progress version of the project.
 
-[unreleased]: https://github.com/pink-kinematics/pink_motions/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/pink-kinematics/pink_motions/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/pink-kinematics/pink_motions/releases/tag/v1.0.0
 [0.3.0]: https://github.com/pink-kinematics/pink_motions/releases/tag/v0.3.0
 [0.2.0]: https://github.com/pink-kinematics/pink_motions/releases/tag/v0.2.0
 [0.1.0]: https://github.com/pink-kinematics/pink_motions/releases/tag/v0.1.0
