@@ -33,7 +33,7 @@ dependencies = [
     "pin-pink >=4.4.0",
     "qpmpc >=2.6.3,<4",
     "qpsolvers >=4.3.1",
-    "robot_descriptions >=3.0.0",
+    "robot_descriptions >=3.3.0",
     "xacrodoc",
 ]
 keywords = ["inverse", "kinematics", "pinocchio"]
