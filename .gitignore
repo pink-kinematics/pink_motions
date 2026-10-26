@@ -1,7 +1,8 @@
 *.pyc
 *.pyo
 .coverage
-.ropeproject
+.pixi/
+.ropeproject/
 dist/
 examples/videos
 htmlcov/
